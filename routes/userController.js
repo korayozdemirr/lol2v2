@@ -24,8 +24,8 @@ router.post('/login', urlencodedParser, async function (req, res) {
             var errorMessage = error.message;
             message = errorCode;
         });
-        res.send(message);
-        
+    res.send(message);
+
 });
 router.post('/register', urlencodedParser, async function (req, res) {
     let email = req.body.email;
@@ -34,19 +34,20 @@ router.post('/register', urlencodedParser, async function (req, res) {
     let message = "";
     await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((users) => {
-            firebase.database().ref().child("users").child(users.user.uid).push({
+            req.session.user = users.user.uid;
+            message = "successful";
+            firebase.database().ref().child("users").child(users.user.uid).set({
                 "name": fullname,
                 "email": email
             });
-            req.session.user = user.uid;
-            message = "succesful";
         })
         .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
             message = errorCode;
+            console.log(req.session);
         });
-        res.send(message);
+    res.send(message);
 });
 
 module.exports = router;
