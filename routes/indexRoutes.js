@@ -17,7 +17,7 @@ router.get("/dashboard", (req, res) => {
             console.log(snapshot.val());
         });
 
-        res.send("Dashboard");
+        res.send("Dashboard1");
     } else {
         res.redirect("/");
     }
