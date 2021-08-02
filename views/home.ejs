@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!-- Coding by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <!--<title> Login and Registration Form in HTML & CSS | CodingLab </title>-->
+  <link rel="stylesheet" href="./style.css">
+  <!-- Fontawesome CDN Link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .colored-toast.swal2-icon-error {
+      background-color: #f27474 !important;
+      width: 300px;
+    }
+  </style>
+  <script tpy="text/javascript">
+    $(function () {
+      $("#login").click((event) => {
+        event.preventDefault();
+
+        let email = $("#lemail").val();
+        let password = $("#lpassword").val();
+
+        if ($.trim(email) == "" || $.trim(password) == "") {
+          alert("Lütfen Bütün Alanları doldurunuz");
+        } else {
+          userControl("/login", "form");
+        }
+      });
+      $("#register").click((event) => {
+        event.preventDefault();
+        let fullName = $("#fullname").val();
+        let email = $("#remail").val();
+        let password = $("#rpassword").val();
+
+        if ($.trim(email) == "" || $.trim(password) == "" || $.trim(fullName)) {
+          alert("Lütfen Bütün Alanları doldurunuz");
+        } else {
+          userControl("/register", "form2");
+        }
+      });
+
+      function userControl(url, data) {
+        $.ajax({
+          url: url,
+          type: "POST",
+          data: $("#"+data).serialize(),
+          success: function (result) {
+            //auth/user-not-found
+            //auth/invalid-email
+            //auth/email-already-in-use
+            //auth/weak-password
+            if (result != "successful") {
+              let errormsg = ""
+              if (result == "auth/user-not-found") {
+                errormsg = "Kullanıcı Bulunamadı !";
+              } else if (result == "auth/invalid-email") {
+                errormsg = "Doğru Bir Email Adresi Giriniz !";
+              } else if (result == "auth/wrong-password") {
+                errormsg = "Şifreniz yanlış !";
+              } else if (result == "auth/too-many-requests") {
+                errormsg = "Çok fazla hata yaptınız daha sonra tekrar deneyiniz";
+              }else if (result == "auth/weak-password") {
+                errormsg = "Şifreniz en az 6 karakterden oluşmalıdır";
+              }else if (result == "auth/email-already-in-use") {
+                errormsg = "Bu eposta adresi zaten kullanılmaktadır";
+              }
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                iconColor: 'white',
+                width: '30%',
+                customClass: {
+                  popup: 'colored-toast',
+
+                },
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+              })
+              Toast.fire({
+                icon: 'error',
+                title: errormsg
+              })
+            } else {
+              window.location.href = "/dashboard";
+            }
+          }
+        });
+      }
+    });
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+  <div class="container">
+    <input type="checkbox" id="flip">
+    <div class="cover">
+      <div class="front">
+        <!--<img src="images/frontImg.jpg" alt="">-->
+        <div class="text">
+          <span class="text-1">Every new friend is a <br> new adventure</span>
+          <span class="text-2">Let's get connected</span>
+        </div>
+      </div>
+      <div class="back">
+        <!--<img class="backImg" src="images/backImg.jpg" alt="">-->
+        <div class="text">
+          <span class="text-1">Complete miles of journey <br> with one step</span>
+          <span class="text-2">Let's get started</span>
+        </div>
+      </div>
+    </div>
+    <div class="context">
+      <form id="form" method="POST" action="/login">
+        <div class="form-content">
+          <div class="login-form">
+            <div class="title">Login</div>
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input id="lemail" type="email" name="email" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input id="lpassword" type="password" name="password" placeholder="Enter your password" required>
+              </div>
+              <div class="text"><a href="#" style="color:#3b357e;">Forgot password?</a></div>
+              <div class="button input-box">
+                <input type="submit" id="login" value="Login">
+              </div>
+              <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="context">
+      <form method="POST" id="form2" action="/register">
+        <div class="form-content">
+          <div class="signup-form">
+            <div class="title">Signup</div>
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-user"></i>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your name" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="remail" name="email" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="rpassword" name="password" placeholder="Enter your password" required>
+              </div>
+              <div class="button input-box">
+                <input type="submit" id="register" value="Singup">
+              </div>
+              <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyA5Fi8D0Wr9M8j8oEURvw3x-9PQdsYNzC0",
+    authDomain: "lol2v2.firebaseapp.com",
+    projectId: "lol2v2",
+    storageBucket: "lol2v2.appspot.com",
+    messagingSenderId: "521321108635",
+    appId: "1:521321108635:web:eceb27ab30c784dc56e23e",
+    measurementId: "G-2RTXVXSY2P"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
