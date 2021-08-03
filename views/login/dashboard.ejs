@@ -2,12 +2,15 @@
 <!-- Created by CodingLab |www.youtube.com/c/CodingLabYT-->
 <html lang="en" dir="ltr">
   <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7678861968397977"
+     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <!--<title> Responsive Sidebar Menu  | CodingLab </title>-->
     <link rel="stylesheet" href="./css/main.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    </head>
 <body>
   <div class="sidebar">
@@ -83,7 +86,10 @@
            <!--<img src="profile.jpg" alt="profileImg">-->
            <div class="name_job">
              <div class="name"><%= user.name %></div>
-             <div class="job"><%= user.email %></div>
+             <div class="job"><% if(!user.game){ %>
+              <button onclick="createAccount()">Hesap Ekle</button>
+              <% }else{user.game} %>
+            </div>
            </div>
          </div>
          <i class='bx bx-log-out' style="cursor: pointer;" id="log_out" onclick=" window.location.href = '/logout' " ></i>
@@ -92,6 +98,7 @@
   </div>
   <section class="home-section">
       <div class="text">Dashboard</div>
+      <div class="game">OYNA</div>
   </section>
   <script src="./js/script.js"></script>
 </body>

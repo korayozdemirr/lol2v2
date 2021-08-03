@@ -45,7 +45,6 @@ router.post('/register', urlencodedParser, async function (req, res) {
             var errorCode = error.code;
             var errorMessage = error.message;
             message = errorCode;
-            console.log(req.session);
         });
     res.send(message);
 });

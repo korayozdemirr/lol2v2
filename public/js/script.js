@@ -20,3 +20,26 @@ function menuBtnChange() {
    closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
  }
 }
+
+
+// sweet alert hesap ekle
+function createAccount(){
+  Swal.fire({
+    title: 'Login Form',
+    html: `<input type="text" id="login" class="swal2-input" placeholder="Lol Kullanıcı Adınız">`,
+    confirmButtonText: 'Ara',
+    focusConfirm: false,
+    preConfirm: () => {
+      const login = Swal.getPopup().querySelector('#login').value
+      if (!login) {
+        Swal.showValidationMessage(`Lütfen Kullanıcı adını giriniz`);
+      }
+      return { login: login}
+    }
+  }).then((result) => {
+    Swal.fire(`
+      Login: ${result.value.login}
+      Password: ${result.value.password}
+    `.trim())
+  })
+}
