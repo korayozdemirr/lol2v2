@@ -2,10 +2,8 @@ const express = require("express");
 const router = express.Router();
 const firebase = require("firebase");
 const fetch = require("node-fetch");
-
+let users;
 router.get("/", async (req, res) => {
-    let users;
-    let user ;
     if (req.session.user) {
          //user değiştirilecek
         users = firebase.auth().currentUser;
@@ -23,6 +21,7 @@ router.get("/", async (req, res) => {
                         summonerLevel: user.summonerLevel,
                         user: req.session.user
                     });
+                    
                     users = user
                 })
                 .catch((error) => {
@@ -47,4 +46,19 @@ router.get("/logout", async (req, res) => {
     }
     res.redirect("/login");
 });
+router.get("/login", (req, res) => {
+    if (req.session.user) {
+        res.redirect("/");
+    } else {
+        res.render("login");
+    }
+});
+router.get("/register", (req, res) => {
+    if (req.session.user) {
+        res.redirect("/");
+    } else {
+        res.render("register");
+    }
+});
+
 module.exports = router;

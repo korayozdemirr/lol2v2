@@ -19,8 +19,6 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-
 //routes 
 const indexRoutes = require("./routes/indexRoutes");
 const userController = require("./routes/userController");
@@ -42,11 +40,11 @@ app.use(lolapi);
 
 
 //404 page 
-
 app.use((req, res, next) => {
-    var users = req.session.user;
-    res.status(404).render("404", {users});
+  
+    res.status(404).render("404");
 });
+
 app.listen(PORT, () => {
     console.log("SERVER START Listining port:" + PORT);
 })

@@ -63,18 +63,5 @@ router.post('/register', urlencodedParser, function (req, res) {
             res.send(errorCode);
         });
 });
-router.get("/login", (req, res) => {
-    if (req.session.user) {
-        res.redirect("/");
-    } else {
-        res.render("login");
-    }
-});
-router.get("/register", (req, res) => {
-    if (req.session.user) {
-        res.redirect("/");
-    } else {
-        res.render("register");
-    }
-});
+
 module.exports = router;
