@@ -20,3 +20,20 @@ function menuBtnChange() {
    closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
  }
 }
+function addAccount(){
+  const steps = ['1', '2', '3']
+  const swalQueue = Swal.mixin({
+    progressSteps: steps,
+    confirmButtonText: 'Next >',
+  })
+
+  await swalQueue.fire({
+    title: 'Uno', currentProgressStep: 0,
+    html:`<input type="text" id="login" class="swal2-input" placeholder="Username">
+    <input type="password" id="password" class="swal2-input" placeholder="Password">`
+    
+  })
+  await swalQueue.fire({ title: 'Dos', currentProgressStep: 1 })
+  await swalQueue.fire({ title: 'Tres', currentProgressStep: 2, confirmButtonText: 'OK' })
+}
+  

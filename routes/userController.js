@@ -6,7 +6,22 @@ var jsonParser = express.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = express.urlencoded({ extended: false })
 //app
+router.post("/forgotpassword", urlencodedParser, async (req, res) => {
+    var message = "ok";
+    const email = req.body.email;
+    await firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+            message = "ok";
 
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ..
+            message = errorMessage;
+        });
+    res.send(message);
+})
 // POST /login gets urlencoded bodies
 router.post('/login', urlencodedParser, async function (req, res) {
     let email = req.body.email;
@@ -27,27 +42,39 @@ router.post('/login', urlencodedParser, async function (req, res) {
     res.send(message);
 
 });
-router.post('/register', urlencodedParser, async function (req, res) {
+router.post('/register', urlencodedParser, function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
-    let fullname = req.body.fullName;
-    let message = "";
-    await firebase.auth().createUserWithEmailAndPassword(email, password)
+    let fullName = req.body.fullName;
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((users) => {
             req.session.user = users.user.uid;
-            message = "successful";
-            firebase.database().ref().child("users").child(users.user.uid).set({
-                "name": fullname,
-                "email": email
+        }).then(() => {
+            const user = firebase.auth().currentUser;
+            user.updateProfile({
+                displayName: fullName
             });
+            res.send("successful");
         })
         .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
-            message = errorCode;
-            console.log(req.session);
+            res.send(errorCode);
         });
-    res.send(message);
 });
-
+router.get("/login", (req, res) => {
+    if (req.session.user) {
+        res.redirect("/");
+    } else {
+        res.render("login");
+    }
+});
+router.get("/register", (req, res) => {
+    if (req.session.user) {
+        res.redirect("/");
+    } else {
+        res.render("register");
+    }
+});
 module.exports = router;

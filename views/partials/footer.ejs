@@ -1,0 +1,119 @@
+<script src="./template/vendor/jquery/jquery.min.js"></script>
+<script src="./template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="./template/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="./template/js/ruang-admin.min.js"></script>
+<script src="./js/usercontrol.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    $(() => {
+        $("#addAccount").click(() => {
+            Swal.fire({
+                title: "Hesap ekle",
+                confirmButtonText: "Tamam",
+                html:
+                    "<div class='form-group'>" +
+                    "<input type='text' class='form-control'  id='user' " +
+                    "placeholder='Kullanıcı Adını Gir'>" +
+                    "</div>" +
+                    "<div class='form-group'>" +
+                    "<select class='form-control'  id='server'> " +
+                    "<option value='' selected>Sunucu Seçin</option>" +
+                    "<option value='tr1'>TR</option>" +
+                    "</select>" +
+                    "</div>",
+                focusConfirm: false,
+                preConfirm: () => {
+                    const userName = Swal.getPopup().querySelector("#user").value;
+                    const serverName = Swal.getPopup().querySelector("#server").value;
+                    if (!userName || !serverName) {
+                        Swal.showValidationMessage(`Lütfen Tüm Alanları Doldurunuz.`);
+                    }
+                    return { userName: userName, server: serverName }
+                }
+            }).then((result) => {
+                var lolUser;
+                var name = result.value.userName;
+                var server = result.value.server;
+                var code = Math.floor(Math.random() * 10000) + 999;
+                $.ajax({
+                    type: "POST",
+                    url: "/summoner",
+                    data: { "summonerName": name, "server": server },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response == "404") {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Hesap bulunamadı!!",
+                                confirmButtonText: "Tamam"
+                            });
+                        } else {
+                            var lolUser = response;
+                            Swal.fire({
+                                title: "Hesap Doğrulama",
+                                html: `
+                                        <div class="card" style="width: 100%;">
+                                            <img class="card-img-top img-profile rounded-circle" src="http://ddragon.leagueoflegends.com/cdn/11.15.1/img/profileicon/${response.profileIconId}.png" style="max-width: 100px; margin:auto;" alt="Card image cap">
+                                        <div class="card-body">
+                                        <h5 class="card-title">${response.name}</h5>
+                                        <p class="card-text">Hesabın size ait olduğunu doğrulamak için aşağıdaki kodu League of Legends istemcisinden AYARLAR/HAKKIMDA/DOĞRULAMA bölümüne 
+                                            girerek metin kutusuna kodu yapıştırınız. Sonra kaydedip burdan onayla butonuna basınız. </p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Doğrulama Kodu: ${code}</li>
+                                        <li class="list-group-item"></li>
+                                        </ul>
+                                        </div>`,
+                                confirmButtonText: "Onayla",
+                                preConfirm: function () {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/thirdparty",
+                                        data: { "summonerId": response.id, "server": server },
+                                        dataType: "json",
+                                        success: function (response) {
+                                            if (response == 400) {
+                                                Swal.fire({
+                                                    icon: "error",
+                                                    title: "Oops...",
+                                                    text: "Kodu girememişsin!",
+                                                    confirmButtonText: "Tamam"
+                                                });
+                                            } else {
+                                                if (response != code) {
+                                                    Swal.fire({
+                                                        icon: "error",
+                                                        title: "Oops...",
+                                                        text: "Kodu yanlış girmişsin! Tekrar Dene",
+                                                        confirmButtonText: "Tamam"
+                                                    });
+                                                } else {
+                                                    $.post("/adduser",  lolUser , function (data) {
+                                                        if(data == "reset"){
+                                                            window.location.reload();
+                                                        }
+                                                    });
+                                                    Swal.fire({
+                                                        icon: "success",
+                                                        title: "Doğrulama Başarılı",
+                                                        text: "Hesap başarılı bir şekilde eklendi",
+                                                        confirmButtonText: "Tamam",
+                                                    
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
+
+</html>

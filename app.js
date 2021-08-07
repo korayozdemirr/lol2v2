@@ -24,6 +24,7 @@ firebase.initializeApp(firebaseConfig);
 //routes 
 const indexRoutes = require("./routes/indexRoutes");
 const userController = require("./routes/userController");
+const lolapi = require("./routes/lolapi");
 //express session----------------------
 app.set("view engine", "ejs");
 app.use(express.static('public'));
@@ -36,12 +37,15 @@ app.use(require('express-session')({
 //routes using
 app.use(indexRoutes);
 app.use(userController);
+app.use(lolapi);
 //body-parser middleware
+
 
 //404 page 
 
 app.use((req, res, next) => {
-    res.status(404).render("404");
+    var user = req.session.user;
+    res.status(404).render("404", {user});
 });
 app.listen(PORT, () => {
     console.log("SERVER START Listining port:" + PORT);
