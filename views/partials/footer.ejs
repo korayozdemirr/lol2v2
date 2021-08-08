@@ -4,6 +4,7 @@
 <script src="./template/js/ruang-admin.min.js"></script>
 <script src="./js/usercontrol.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<% if(!users){ %>
 <script type="text/javascript">
     $(() => {
         $("#addAccount").click(() => {
@@ -114,6 +115,7 @@
         });
     });
 </script>
+<% } %>
 </body>
 
 </html>

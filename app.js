@@ -41,8 +41,8 @@ app.use(lolapi);
 
 //404 page 
 app.use((req, res, next) => {
-  
-    res.status(404).render("404");
+    var users = req.session.user;
+    res.status(404).render("404", {users});
 });
 
 app.listen(PORT, () => {

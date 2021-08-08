@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const firebase = require("firebase");
 const fetch = require("node-fetch");
+const { route } = require("./userController");
 let users;
 router.get("/", async (req, res) => {
     if (req.session.user) {
@@ -46,18 +47,27 @@ router.get("/logout", async (req, res) => {
     }
     res.redirect("/login");
 });
+router.get("/message", (req,res)=>{
+    if(!req.session.user){
+        res.redirect("/login");
+    }else{
+        res.render("message", {users});
+    }
+
+    
+});
 router.get("/login", (req, res) => {
     if (req.session.user) {
         res.redirect("/");
     } else {
-        res.render("login");
+        res.render("login", {users});
     }
 });
 router.get("/register", (req, res) => {
     if (req.session.user) {
         res.redirect("/");
     } else {
-        res.render("register");
+        res.render("register" , {users});
     }
 });
 
