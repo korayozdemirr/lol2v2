@@ -45,7 +45,8 @@ router.post("/adduser", urlencodedParser, async (req, res) => {
         "profileIconId": req.body.profileIconId,
         "revisionDate": req.body.revisionDate,
         "summonerLevel": req.body.summonerLevel,
-        "user":req.session.user
+        "user":req.session.user,
+        "server":req.body.server
     })
     .then(() => {
         users.updateProfile({

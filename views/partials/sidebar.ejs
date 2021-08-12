@@ -1,7 +1,7 @@
 <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
       <div class="sidebar-brand-icon">
-        <img src="template/img/logo/logo2.png">
+        <img src="../../template/img/logo/logo2.png">
       </div>
       <div class="sidebar-brand-text mx-3">RuangAdmin</div>
     </a>
@@ -27,10 +27,16 @@
               <span>Kayıt Ol</span></a>
           </li> 
     <% }else{ %>
+      
       <li class="nav-item active">
         <a class="nav-link" href="/">
           <i class="fas fa-play"></i>
           <span>Oyun Oluştur</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/profile/<%= users.id %>">
+          <i class="fas fa-user"></i>
+          <span>Profil</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="/message">
@@ -43,7 +49,7 @@
           <span>Ayarlar</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/">
+        <a class="nav-link" href="/logout">
           <i class="fas fa-sign-out-alt"></i>
           <span>Çıkış Yap</span></a>
       </li>

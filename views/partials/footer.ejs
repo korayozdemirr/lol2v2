@@ -4,7 +4,6 @@
 <script src="./template/js/ruang-admin.min.js"></script>
 <script src="./js/usercontrol.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<% if(!users){ %>
 <script type="text/javascript">
     $(() => {
         $("#addAccount").click(() => {
@@ -51,6 +50,7 @@
                             });
                         } else {
                             var lolUser = response;
+                            lolUser.server = server;
                             Swal.fire({
                                 title: "Hesap Doğrulama",
                                 html: `
@@ -90,6 +90,7 @@
                                                         confirmButtonText: "Tamam"
                                                     });
                                                 } else {
+                                                    console.log(lolUser)
                                                     $.post("/adduser",  lolUser , function (data) {
                                                         if(data == "reset"){
                                                             window.location.reload();
@@ -115,7 +116,6 @@
         });
     });
 </script>
-<% } %>
 </body>
 
 </html>

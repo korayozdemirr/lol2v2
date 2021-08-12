@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const firebase = require("firebase");
 const fetch = require("node-fetch");
-const { route } = require("./userController");
 let users;
 router.get("/", async (req, res) => {
     if (req.session.user) {
@@ -10,7 +9,7 @@ router.get("/", async (req, res) => {
         users = firebase.auth().currentUser;
         if (users.photoURL != null) {
             let id =  users.photoURL;
-           await fetch(`https://tr1.api.riotgames.com/lol/summoner/v4/summoners/${users.photoURL}?api_key=RGAPI-8e1951b8-e889-4c0c-87f8-1cf7d096e7f1`)
+            await fetch(`https://tr1.api.riotgames.com/lol/summoner/v4/summoners/${users.photoURL}?api_key=RGAPI-8e1951b8-e889-4c0c-87f8-1cf7d096e7f1`)
                 .then((response) => response.json())
                 .then((user)=>{
                     firebase.database().ref().child("loluser").child(id).set({
@@ -52,6 +51,15 @@ router.get("/message", (req,res)=>{
         res.redirect("/login");
     }else{
         res.render("message", {users});
+    }
+
+    
+});
+router.get("/profile/:sv/:id", (req,res)=>{
+    if(!req.session.user){
+        res.redirect("/login");
+    }else{
+        res.render("profile", {users});
     }
 
     
